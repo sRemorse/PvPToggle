@@ -1,0 +1,10 @@
+name: PvPToggle
+version: '1.0'
+main: com.remorse.pvptoggle.PvPToggle
+api-version: '1.21'
+
+commands:
+  pvp:
+    description: PvPToggle command
+    usage: /pvp or /pvp <subcommand>
+
