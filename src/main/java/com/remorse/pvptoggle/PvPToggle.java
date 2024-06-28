@@ -20,6 +20,7 @@ public final class PvPToggle extends JavaPlugin {
 
         try{
             if (!getDataFolder().exists()){
+                log.info("No data folder found, creating one");
                 getDataFolder().mkdirs();
             }
             pvpDatabase = new PvPDatabase(getDataFolder().getAbsolutePath() + "/PvPToggle.db");
