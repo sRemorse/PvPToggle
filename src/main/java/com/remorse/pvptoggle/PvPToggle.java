@@ -18,20 +18,8 @@ public final class PvPToggle extends JavaPlugin {
         // Plugin startup logic
         log = getLogger();
 
-        try{
-            if (!getDataFolder().exists()){
-                log.info("No data folder found, creating one");
-                getDataFolder().mkdirs();
-            }
-            pvpDatabase = new PvPDatabase(getDataFolder().getAbsolutePath() + "/PvPToggle.db");
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            log.warning("Failed to connect to the database!" + exception.getMessage());
-            Bukkit.getPluginManager().disablePlugin(this); // Disable plugin if unable to connect to DB
-        }
-
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this, this::connectToDatabase);
         registerCommands();
-
     }
 
     @Override
@@ -42,10 +30,29 @@ public final class PvPToggle extends JavaPlugin {
         }catch (SQLException exception){
             exception.printStackTrace();
         }
-
     }
 
     public void registerCommands(){
         getCommand("pvp").setExecutor(new PvPToggleCommand());
     }
+
+    public void disablePluginLoad(){
+        Bukkit.getPluginManager().disablePlugin(this); // Disable plugin if unable to connect to DB
+        log.info("Disabling plugin.");
+    }
+
+    public void connectToDatabase(){
+        try{
+            if (!getDataFolder().exists()){
+                log.info("No data folder found, creating one.");
+                getDataFolder().mkdirs();
+            }
+            pvpDatabase = new PvPDatabase(getDataFolder().getAbsolutePath() + "/PvPToggle.db");
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            log.warning("Failed to connect to the database!" + exception.getMessage());
+            disablePluginLoad();
+        }
+    }
+
 }
