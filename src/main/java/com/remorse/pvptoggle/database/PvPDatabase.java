@@ -5,11 +5,12 @@ import org.bukkit.entity.Player;
 
 import java.sql.*;
 
-public class PvPDatabase {
+public class PvPDatabase{
 
     private final Connection connection;
 
     public PvPDatabase(String path) throws SQLException {
+        PvPToggle.log.info("Attempting to connect to database.");
         connection = DriverManager.getConnection("jdbc:sqlite:" + path);
         try (Statement statement = connection.createStatement()) {
             statement.execute("""
@@ -18,6 +19,7 @@ public class PvPDatabase {
                             uuid TEXT NOT NULL UNIQUE,
                             pvp_enabled BOOLEAN NOT NULL DEFAULT 0)
                     """);
+            PvPToggle.log.info("Connection successful.");
         }
     }
 
